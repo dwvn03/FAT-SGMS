@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="FAT-SGMS:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>FAT-SGMS</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="FAT-SGMS-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="FAT-SGMS:war exploded" />
+    </root>
+  </artifact>
+</component>
