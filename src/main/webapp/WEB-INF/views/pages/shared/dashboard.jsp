@@ -5,14 +5,15 @@
     <%@ include file="/WEB-INF/views/layouts/common-head.html" %>
     <title>FAT-SGMS</title>
 </head>
-<body class="flex flex-col h-screen">
-    <div class="flex-grow flex mx-2 md:mx-8">
-        <jsp:include page="/WEB-INF/views/layouts/navbar.jsp" />
-        <main class="flex-grow container">
-            <h1>Dashboard</h1>
+<body class="flex h-screen">
+    <jsp:include page="/WEB-INF/views/layouts/navbar.jsp" />
 
+    <div class="flex-grow flex flex-col">
+        <main class="flex-grow container p-4 md:p-8">
+            <h1>Dashboard</h1>
         </main>
+
+        <%@ include file="/WEB-INF/views/layouts/footer.html" %>
     </div>
-    <%@ include file="/WEB-INF/views/layouts/footer.html" %>
 </body>
 </html>
