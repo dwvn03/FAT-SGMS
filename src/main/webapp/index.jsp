@@ -1,13 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="utils.auth.Auth" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%
+    if (Auth.isAuthorized(session)) {
+        response.sendRedirect("/dashboard");
+        return;
+    }
+%>
 <!DOCTYPE html>
-<html>
-<head>
-    <title>JSP - Hello World</title>
-</head>
-<body>
-<h1><%= "Hello World!" %>
-</h1>
-<br/>
-<a href="hello-servlet">Hello Servlet</a>
-</body>
-</html>
+<%@ include file="/WEB-INF/views/pages/shared/login.jsp" %>
