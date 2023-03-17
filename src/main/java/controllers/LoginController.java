@@ -33,6 +33,8 @@ public class LoginController extends HttpServlet {
         HttpSession session = request.getSession();
         session.setAttribute("email", email);
         session.setAttribute("role", user.getRole());
+        session.setAttribute("name", user.getName());
+        session.setAttribute("avatar", user.getAvatar());
 
         response.sendRedirect("/dashboard");
     }

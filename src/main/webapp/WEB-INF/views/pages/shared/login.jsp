@@ -1,13 +1,13 @@
 <html>
 	<head>
 		<%@ include file="/WEB-INF/views/layouts/common-head.html" %>
-		<title>Log in</title>
+		<title>FAT-SGMS</title>
 		<script src="https://accounts.google.com/gsi/client" async defer></script>
 	</head>
 	<body class="flex flex-col h-screen">
 		<%@ include file="/WEB-INF/views/layouts/header.html" %>
 		<main class="flex flex-initial container mx-auto flex-grow flex-wrap content-center">
-			<div class="basis-1/2">
+			<div class="basis-1/2 px-8">
 				<h1 class="mb-8 text-4xl">FPTU Attendance Taking<br> & Student Grade<br> Management System</h1>
 
 				<div

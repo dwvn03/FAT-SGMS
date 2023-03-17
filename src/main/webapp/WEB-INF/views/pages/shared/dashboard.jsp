@@ -1,16 +1,18 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: doloc
-  Date: 3/16/2023
-  Time: 5:16
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <html>
 <head>
-    <title>Title</title>
+    <%@ include file="/WEB-INF/views/layouts/common-head.html" %>
+    <title>FAT-SGMS</title>
 </head>
-<body>
-    <h1>Dashboard</h1>
+<body class="flex flex-col h-screen">
+    <div class="flex-grow flex mx-2 md:mx-8">
+        <jsp:include page="/WEB-INF/views/layouts/navbar.jsp" />
+        <main class="flex-grow container">
+            <h1>Dashboard</h1>
+
+        </main>
+    </div>
+    <%@ include file="/WEB-INF/views/layouts/footer.html" %>
 </body>
 </html>
