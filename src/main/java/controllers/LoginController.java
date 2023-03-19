@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import models.Student;
 import models.User;
+import utils.auth.AuthUtils;
 import utils.auth.GoogleAuth;
 
 import java.io.IOException;
@@ -19,6 +20,23 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String csrfTokenCookie = AuthUtils.readCookie("g_csrf_token", request);
+        if (csrfTokenCookie == null) {
+            response.sendError(400, "No CSRF token in Cookie.");
+            return;
+        }
+
+        String csrfToken = request.getParameter("g_csrf_token");
+        if (csrfToken == null) {
+            response.sendError(400, "No CSRF token in post body.");
+            return;
+        }
+
+        if (!csrfToken.equals(csrfTokenCookie)) {
+            response.sendError(400, "Failed to verify double submit cookie.");
+            return;
+        }
+
         String credential = request.getParameter("credential");
         String email = GoogleAuth.verifyGoogleCredential(credential);
 
