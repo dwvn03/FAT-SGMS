@@ -14,6 +14,18 @@ public class AuthUtils {
         return session.getAttribute("role") != null && session.getAttribute("email") != null;
     }
 
+    public static boolean isStudent(HttpSession session) {
+        return "student".equals(getRole(session));
+    }
+
+    public static boolean isInstructor(HttpSession session) {
+        return "instructor".equals(getRole(session));
+    }
+
+    public static boolean isAdmin(HttpSession session) {
+        return "admin".equals(getRole(session));
+    }
+
     public static String readCookie(String key, HttpServletRequest request) {
         return Arrays.stream(request.getCookies())
                 .filter(c -> key.equals(c.getName()))
