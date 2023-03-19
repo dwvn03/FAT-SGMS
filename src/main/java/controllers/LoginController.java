@@ -50,6 +50,7 @@ public class LoginController extends HttpServlet {
         }
 
         session.setAttribute("email", email);
+        session.setAttribute("userId", user.getId());
         session.setAttribute("role", user.getRole());
         session.setAttribute("name", user.getName());
         session.setAttribute("avatar", user.getAvatar());

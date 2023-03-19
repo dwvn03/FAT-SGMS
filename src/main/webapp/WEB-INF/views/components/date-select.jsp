@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
-<form action="/student/schedule" method="post">
+<form action="/${sessionScope.role}/schedule" method="post">
   <div>
     <fmt:formatDate value="${requestScope.from}" pattern="yyyy" var="fromYear"/>
     <span>Year</span>

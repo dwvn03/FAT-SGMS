@@ -5,19 +5,30 @@
 <%@ page import="models.Route" %>
 <c:set var="page_url" value="${requestScope['jakarta.servlet.forward.request_uri']}"/>
 <%
-    List<Route> routes = Arrays.asList(
+    List<Route> studentRoutes = Arrays.asList(
         new Route("/dashboard", "Home"),
         new Route("/student/schedule", "Weekly schedule"),
         new Route("#", "Attendance report")
     );
-    request.setAttribute("routes", routes);
+
+    List<Route> instructorRoutes = Arrays.asList(
+        new Route("/dashboard", "Home"),
+        new Route("/instructor/schedule", "Weekly schedule"),
+        new Route("/instructor/take-attendance", "Take attendance", true)
+    );
+
+    if (session.getAttribute("role").equals("student")) {
+        request.setAttribute("routes", studentRoutes);
+    } else {
+        request.setAttribute("routes", instructorRoutes);
+    }
 %>
 
 <nav class="px-4 py-4 md:px-8 md:py-8 basis-5/24 flex flex-col justify-between border-solid border-slate-150 border-r">
     <ul>
         <c:forEach items="${routes}" var="route">
             <li class="p-1 pl-3 text-lg ${page_url == route.getLocation() ? "bg-sky-50 rounded-r-md border-solid border-sky-500 border-l-2 text-sky-500" : "border-solid border-slate-300 hover:border-slate-600 border-l-2 text-slate-600 hover:text-slate-900"}">
-                <a href="${route.getLocation()}">${route.getDescription()}</a>
+                <a class="${route.isDisabled() ? 'disabled cursor-not-allowed' : ''}" href="${route.getLocation()}">${route.getDescription()}</a>
             </li>
         </c:forEach>
     </ul>
@@ -32,3 +43,11 @@
         </div>
     </div>
 </nav>
+
+<script defer>
+    document.querySelectorAll('.disabled').forEach(link => {
+        link.addEventListener('click', e => {
+            e.preventDefault();
+        });
+    });
+</script>

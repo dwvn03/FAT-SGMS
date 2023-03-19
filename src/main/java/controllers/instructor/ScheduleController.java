@@ -1,4 +1,4 @@
-package controllers.student;
+package controllers.instructor;
 
 import data.SessionDataSource;
 import jakarta.servlet.ServletException;
@@ -16,14 +16,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@WebServlet(name = "StudentScheduleController", urlPatterns = {"/student/schedule"})
+@WebServlet(name = "InstructorScheduleController", value = "/instructor/schedule")
 public class ScheduleController extends HttpServlet {
     private final int START_YEAR = 2019;
     private final int END_YEAR = 2024;
     void processRequest(HttpServletRequest request, HttpServletResponse response, Date from) throws ServletException, IOException {
-        int studentId = (int) request.getSession().getAttribute("studentId");
+        int instructorId = (int) request.getSession().getAttribute("userId");
         SessionDataSource sessionDataSource = new SessionDataSource();
-        List<Session> sessions = sessionDataSource.getStudentSchedule(studentId, from, Date.valueOf(from.toLocalDate().plusDays(6)));
+        List<Session> sessions = sessionDataSource.getInstructorSchedule(instructorId, from, Date.valueOf(from.toLocalDate().plusDays(6)));
 
         var weeklySchedule = DateUtils.sessionListToWeeklySchedule(sessions);
 
@@ -37,10 +37,10 @@ public class ScheduleController extends HttpServlet {
         request.setAttribute("START_YEAR", START_YEAR);
 
         request.setAttribute("weeklySchedule", weeklySchedule);
-        request.setAttribute("location", "/student/schedule");
+        request.setAttribute("location", "/instructor/schedule");
 
         request.setAttribute("from", from);
-        request.getRequestDispatcher("/WEB-INF/views/pages/client/student/weekly-schedule.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/views/pages/client/instructor/weekly-schedule.jsp").forward(request, response);
     }
 
     @Override

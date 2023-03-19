@@ -20,10 +20,11 @@ public class StudentAuthFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (!AuthUtils.isStudent(req.getSession()) || !AuthUtils.isAdmin(req.getSession())) {
+        if (!AuthUtils.isStudent(req.getSession()) && !AuthUtils.isAdmin(req.getSession())) {
             ((HttpServletResponse) response).sendError(401, "Unauthorized");
             return;
         }
+
         chain.doFilter(request, response);
     }
 }

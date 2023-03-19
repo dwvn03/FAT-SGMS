@@ -13,7 +13,44 @@ public class SessionDataSource extends DataSourceImpl<Session> {
         return null;
     }
 
-    public List<Session> getModelsFromResultSet(ResultSet rs) throws SQLException {
+    public List<Session> getInstructorSessionsFromResultSet(ResultSet rs) throws SQLException {
+        List<Session> sessions = new ArrayList<>();
+
+        while (rs.next()) {
+            TimeSlot ts = TimeSlot.builder()
+                    .id(rs.getInt("time_slot_id"))
+                    .start_time(rs.getTime("start_time"))
+                    .end_time(rs.getTime("end_time"))
+                    .build();
+
+            Course c = Course.builder()
+                    .name(rs.getString("course_name"))
+                    .build();
+
+            Room r = Room.builder()
+                    .name(rs.getString("room_name"))
+                    .build();
+
+            Group g = Group.builder()
+                    .course(c)
+                    .name(rs.getString("group_name"))
+                    .build();
+
+            Session ses = Session.builder()
+                    .id(rs.getLong("id"))
+                    .date(rs.getDate("date"))
+                    .timeSlot(ts)
+                    .group(g)
+                    .room(r)
+                    .build();
+
+            sessions.add(ses);
+        }
+
+        return sessions;
+    }
+
+    public List<Session> getStudentSessionsFromResultSet(ResultSet rs) throws SQLException {
         List<Session> sessions = new ArrayList<>();
 
         while (rs.next()) {
@@ -73,7 +110,34 @@ public class SessionDataSource extends DataSourceImpl<Session> {
         return null;
     }
 
-    public List<Session> getSchedule(int studentId, Date from, Date to) {
+    public List<Session> getInstructorSchedule(int instructorId, Date from, Date to) {
+        String sql =
+            """
+            SELECT ses.id, ses.date, c.name as course_name, time_slot_id, t.start_time, t.end_time, r.name as room_name, g.name as group_name
+            FROM [Session] ses
+            INNER JOIN [Time_slot] t ON ses.time_slot_id = t.id
+            INNER JOIN [Group] g ON ses.group_id = g.id
+            INNER JOIN [Course] c ON g.course_id = c.id
+            INNER JOIN [Room] r ON ses.room_id = r.id
+            WHERE ses.instructor_id = ? AND ses.date BETWEEN ? AND ?
+            """;
+
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, instructorId);
+            statement.setDate(2, from);
+            statement.setDate(3, to);
+            ResultSet rs = statement.executeQuery();
+
+            return getInstructorSessionsFromResultSet(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Session> getStudentSchedule(int studentId, Date from, Date to) {
         String sql =
             """
             SELECT ses.date, c.name as course_name, time_slot_id, t.start_time, t.end_time, r.name as room_name, s.attended
@@ -82,7 +146,6 @@ public class SessionDataSource extends DataSourceImpl<Session> {
             INNER JOIN [Group] g ON ses.group_id = g.id
             INNER JOIN [Course] c ON g.course_id = c.id
             INNER JOIN [Room] r ON ses.room_id = r.id
-            INNER JOIN [User] i ON ses.instructor_id = i.id
             INNER JOIN [Status] s ON ses.id = s.session_id
             WHERE s.student_id = ? AND ses.date BETWEEN ? AND ?
             """;
@@ -94,7 +157,7 @@ public class SessionDataSource extends DataSourceImpl<Session> {
             statement.setDate(3, to);
             ResultSet rs = statement.executeQuery();
 
-            return getModelsFromResultSet(rs);
+            return getStudentSessionsFromResultSet(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
