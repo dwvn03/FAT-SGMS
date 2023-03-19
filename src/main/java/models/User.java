@@ -12,7 +12,8 @@ public class User {
     String name;
     String email;
     String avatar;
-    boolean gender;
+    String gender;
     Date dob;
     String role;
+    Student student;
 }

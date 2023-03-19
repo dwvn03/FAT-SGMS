@@ -10,7 +10,7 @@
 
     <div class="flex-grow flex flex-col">
         <main class="flex-grow container p-4 md:p-8">
-            <h1>Dashboard</h1>
+            <h1 class="mb-5 text-4xl text-slate-600 text-center">Dashboard</h1>
         </main>
 
         <%@ include file="/WEB-INF/views/layouts/footer.html" %>

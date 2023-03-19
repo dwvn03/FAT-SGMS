@@ -1,13 +1,18 @@
 package controllers;
 
+import data.StudentDataSource;
 import data.UserDataSource;
-import jakarta.servlet.*;
-import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import models.Student;
 import models.User;
 import utils.auth.GoogleAuth;
 
-import java.io.*;
+import java.io.IOException;
 
 @WebServlet(name = "LoginController", urlPatterns = "/auth/google")
 public class LoginController extends HttpServlet {
@@ -31,6 +36,19 @@ public class LoginController extends HttpServlet {
         }
 
         HttpSession session = request.getSession();
+
+        if (user.getRole().equals("student")) {
+            StudentDataSource studentDataSource = new StudentDataSource();
+
+            Student student = studentDataSource.getStudentByUserId(user.getId());
+            if (student == null) {
+                response.sendError(401, "Student not found");
+                return;
+            }
+            user.setStudent(student);
+            session.setAttribute("studentId", student.getId());
+        }
+
         session.setAttribute("email", email);
         session.setAttribute("role", user.getRole());
         session.setAttribute("name", user.getName());

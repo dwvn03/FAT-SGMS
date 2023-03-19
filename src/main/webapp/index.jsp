@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="utils.auth.Auth" %>
+<%@ page import="utils.auth.AuthUtils" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%
-    if (Auth.isAuthorized(session)) {
+    if (AuthUtils.isAuthorized(session)) {
         response.sendRedirect("/dashboard");
         return;
     }

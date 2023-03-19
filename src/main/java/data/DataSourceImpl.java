@@ -3,7 +3,7 @@ package data;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public abstract class DataSourceImpl<T> {
     public DataSourceImpl() {
@@ -23,5 +23,5 @@ public abstract class DataSourceImpl<T> {
 
     public abstract T get(int id);
 
-    public abstract ArrayList<T> all() ;
+    public abstract List<T> all() ;
 }

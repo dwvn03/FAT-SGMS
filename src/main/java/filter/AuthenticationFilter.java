@@ -1,13 +1,12 @@
 package filter;
 
 import jakarta.servlet.*;
-import jakarta.servlet.annotation.*;
+import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import utils.auth.Auth;
+import utils.auth.AuthUtils;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @WebFilter(filterName = "AuthenticationFilter", urlPatterns = {"/dashboard", "/admin/*"})
 public class AuthenticationFilter implements Filter {
@@ -21,7 +20,7 @@ public class AuthenticationFilter implements Filter {
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest req = (HttpServletRequest) request;
 
-        if (!Auth.isAuthorized(req.getSession())) {
+        if (!AuthUtils.isAuthorized(req.getSession())) {
             ((HttpServletResponse) response).sendRedirect("/");
             return;
         }

@@ -5,9 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 import java.util.Arrays;
-import java.util.Optional;
 
-public class Auth {
+public class AuthUtils {
     public static String getRole(HttpSession session) {
         return (String) session.getAttribute("role");
     }

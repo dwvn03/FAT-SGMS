@@ -2,10 +2,11 @@ package data;
 
 import models.User;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 
 public class UserDataSource extends DataSourceImpl<User> {
     @Override
@@ -15,10 +16,11 @@ public class UserDataSource extends DataSourceImpl<User> {
                     .name(rs.getString("name"))
                     .email(rs.getString("email"))
                     .avatar(rs.getString("avatar"))
-                    .gender(rs.getBoolean("gender"))
+                    .gender(rs.getString("gender"))
                     .dob(rs.getDate("dob"))
                     .role(rs.getString("role"))
                     .build();
+
     }
 
     @Override
@@ -40,11 +42,11 @@ public class UserDataSource extends DataSourceImpl<User> {
     public User get(int id) {
         String sql = "SELECT * FROM [User] WHERE id = ?";
 
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(sql);
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, id);
             ResultSet rs = statement.executeQuery();
-
+            System.out.println();
             if (rs.next())
                 return getModelFromResultSet(rs);
         } catch (SQLException e) {
@@ -57,8 +59,8 @@ public class UserDataSource extends DataSourceImpl<User> {
     public User get(String email) {
         String sql = "SELECT * FROM [User] WHERE email = ?";
 
-        try {
-            PreparedStatement statement = this.getConnection().prepareStatement(sql);
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
             statement.setString(1, email);
             ResultSet rs = statement.executeQuery();
 
@@ -72,7 +74,7 @@ public class UserDataSource extends DataSourceImpl<User> {
     }
 
     @Override
-    public ArrayList<User> all() {
+    public List<User> all() {
         return null;
     }
 }
