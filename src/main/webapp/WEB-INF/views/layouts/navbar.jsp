@@ -25,13 +25,13 @@
 %>
 
 <nav class="px-4 py-4 md:px-8 md:py-8 basis-5/24 flex flex-col justify-between border-solid border-slate-150 border-r">
-    <ul>
+    <div>
         <c:forEach items="${routes}" var="route">
-            <li class="p-1 pl-3 text-lg ${page_url == route.getLocation() ? "bg-sky-50 rounded-r-md border-solid border-sky-500 border-l-2 text-sky-500" : "border-solid border-slate-300 hover:border-slate-600 border-l-2 text-slate-600 hover:text-slate-900"}">
-                <a class="${route.isDisabled() ? 'disabled cursor-not-allowed' : ''}" href="${route.getLocation()}">${route.getDescription()}</a>
-            </li>
+            <a href="${route.getLocation()}" class="${route.isDisabled() ? 'disabled cursor-not-allowed' : ''} block p-1 pl-3 text-lg ${page_url == route.getLocation() ? "bg-sky-50 rounded-r-md border-solid border-sky-500 border-l-2 text-sky-500" : "border-solid border-slate-300 hover:border-slate-600 border-l-2 text-slate-600 hover:text-slate-900"}">
+                ${route.getDescription()}
+            </a>
         </c:forEach>
-    </ul>
+    </div>
 
     <div class="flex items-center flex-wrap">
         <img class="mr-5 rounded-md w-14 h-14 object-cover" src="${sessionScope.getOrDefault("avatar", "https://placehold.co/300x400")}" alt="avatar">
