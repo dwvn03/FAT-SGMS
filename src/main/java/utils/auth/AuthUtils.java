@@ -27,6 +27,10 @@ public class AuthUtils {
     }
 
     public static String readCookie(String key, HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null)
+            return null;
+
         return Arrays.stream(request.getCookies())
                 .filter(c -> key.equals(c.getName()))
                 .map(Cookie::getValue)
