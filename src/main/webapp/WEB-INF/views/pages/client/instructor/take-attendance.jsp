@@ -14,7 +14,11 @@
   <main class="flex-grow container p-4 md:p-8 mx-auto">
     <h1 class="mb-5 text-4xl text-slate-600 text-center">Take attendance</h1>
 
-    <p>${requestScope.statuses.size()}</p>
+    <div class="flex gap-3">
+      <button class="border border-solid border-slate-200 rounded-md p-2 mb-5 bg-slate-200 hover:bg-slate-300" onclick="toggleAvatar()">Toggle avatar</button>
+      <button class="border border-solid border-green-400 rounded-md p-2 mb-5 bg-green-200 hover:bg-green-300" onclick="toggleAttendance(true)">Mark all as present</button>
+      <button class="border border-solid border-red-400 rounded-md p-2 mb-5 bg-red-200 hover:bg-red-300" onclick="toggleAttendance(false)">Mark all as absent</button>
+    </div>
 
     <form action="/instructor/take-attendance" method="post">
       <input type="hidden" name="session_id" value="${requestScope.session_id}">
@@ -30,8 +34,8 @@
         </c:forEach>
 
         <c:forEach items="${requestScope.statuses}" var="status" varStatus="loop">
-          <div class="text-center bg-slate-100 flex flex justify-center items-center">${loop.count}</div>
-          <div class="text-center bg-slate-100 flex flex justify-center items-center">
+          <div class="text-center bg-slate-100 flex justify-center items-center">${loop.count}</div>
+          <div class="text-center bg-slate-100 flex justify-center items-center">
             <img class="w-40 h-40 rounded-md" src="${status.student.user.avatar}" alt="${status.student.user.name}">
           </div>
           <div class="text-center bg-slate-100 flex justify-center items-center">
@@ -57,7 +61,7 @@
       </div>
 
       <div class="flex justify-center mt-5">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="border border-solid border-slate-200 rounded-md p-2 mb-5 bg-slate-200 hover:bg-slate-300">Submit</button>
       </div>
     </form>
   </main>
@@ -66,6 +70,8 @@
 </div>
 <script defer>
     const form = document.querySelector('form');
+    const avatars = document.querySelectorAll('img');
+    const checkboxes = document.querySelectorAll('.peer');
 
     form.addEventListener('submit', () => {
         <c:forEach items="${requestScope.statuses}" var="status">
@@ -74,6 +80,18 @@
           }
         </c:forEach>
     })
+
+    function toggleAvatar() {
+        avatars.forEach(avatar => {
+            avatar.classList.toggle('hidden');
+        })
+    }
+
+    function toggleAttendance(checked) {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = checked;
+        })
+    }
 </script>
 </body>
 </html>
