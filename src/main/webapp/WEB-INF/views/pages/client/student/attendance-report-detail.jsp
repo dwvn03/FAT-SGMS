@@ -27,7 +27,7 @@
 
     <c:if test="${requestScope.absentPercentage > 20}">
       <p class="mb-5 text-2xl text-red-500 text-center">
-        You are not eligible for the final exam because you have more than 20% absents.
+        Student is not eligible for the final exam because of having more than 20% absents.
       </p>
     </c:if>
 
