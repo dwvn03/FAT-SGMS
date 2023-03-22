@@ -69,6 +69,7 @@ public class SessionDataSource extends DataSourceImpl<Session> {
                     .build();
 
             Group g = Group.builder()
+                    .name(rs.getString("group_name"))
                     .course(c)
                     .build();
 
@@ -140,7 +141,7 @@ public class SessionDataSource extends DataSourceImpl<Session> {
     public List<Session> getStudentSchedule(int studentId, Date from, Date to) {
         String sql =
             """
-            SELECT ses.date, c.name as course_name, time_slot_id, t.start_time, t.end_time, r.name as room_name, s.attended
+            SELECT ses.date, c.name as course_name, g.name as group_name, time_slot_id, t.start_time, t.end_time, r.name as room_name, s.attended
             FROM [Session] ses
             INNER JOIN [Time_slot] t ON ses.time_slot_id = t.id
             INNER JOIN [Group] g ON ses.group_id = g.id

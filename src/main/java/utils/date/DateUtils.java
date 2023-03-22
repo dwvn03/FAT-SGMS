@@ -26,12 +26,9 @@ public class DateUtils {
         );
 
         for (Session session : sessions) {
-            LocalDate date = session.getDate().toLocalDate();
-            LocalTime startTime = session.getTimeSlot().getStart_time().toLocalTime();
-            LocalDateTime dateTime = LocalDateTime.of(date, startTime);
-            session.setYetToStart(dateTime.isBefore(LocalDateTime.now()));
+            session.setYetToStart(getYetToStart(session));
 
-            int dayOfWeek = date.getDayOfWeek().getValue();
+            int dayOfWeek = session.getDate().toLocalDate().getDayOfWeek().getValue();
             int timeSlot = session.getTimeSlot().getId();
 
             weeklySchedule.get(timeSlot - 1).set(dayOfWeek - 1, session);
@@ -71,5 +68,12 @@ public class DateUtils {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM");
             return monday.format(formatter);
         }).collect(Collectors.toList());
+    }
+
+    public static boolean getYetToStart(Session session) {
+        LocalDate date = session.getDate().toLocalDate();
+        LocalTime startTime = session.getTimeSlot().getStart_time().toLocalTime();
+        LocalDateTime dateTime = LocalDateTime.of(date, startTime);
+        return dateTime.isBefore(LocalDateTime.now());
     }
 }

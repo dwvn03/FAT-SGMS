@@ -45,7 +45,7 @@
           <div
             class="${!session.isYetToStart() ? "bg-yellow-100" : isInstructor ? "bg-slate-100" : session.getStatus().get(0).isAttended() ? "bg-green-200" : "bg-red-200"} p-2 text-center text-slate-600 font-bold">
             <a href="#">
-                ${session.getGroup().getCourse().getName()} - ${session.getGroup().getName()}
+                ${session.getGroup().getName()}
             </a>
             <br>
             <span>at ${session.getRoom().getName()}</span>

@@ -1,8 +1,6 @@
 package data;
 
-import models.Status;
-import models.Student;
-import models.User;
+import models.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -109,6 +107,76 @@ public class StatusDataSource extends DataSourceImpl<Status> {
             ResultSet rs = statement.executeQuery();
 
             return getModelsFromResultSet(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public List<Status> getStatusesFromStudentIdAndGroupId(int studentId, int groupId) {
+        String sql =
+                """
+                SELECT ses.date, g.name as group_name, time_slot_id, t.start_time, t.end_time, s.attended, u.name as student_name, u.email, i.name as instructor_name
+                FROM [Session] ses
+                INNER JOIN [Time_slot] t ON ses.time_slot_id = t.id
+                INNER JOIN [Group] g ON ses.group_id = g.id
+                INNER JOIN [Status] s ON ses.id = s.session_id
+                INNER JOIN [Student] st ON s.student_id = st.id
+                INNER JOIN [User] u ON u.id = st.user_id
+                INNER JOIN [USER] i ON i.id = ses.instructor_id
+                WHERE s.student_id = ? AND ses.group_id = ?
+                """;
+
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, studentId);
+            statement.setInt(2, groupId);
+            ResultSet rs = statement.executeQuery();
+
+            List<Status> statuses = new ArrayList<>();
+
+            while (rs.next()) {
+                TimeSlot ts = TimeSlot.builder()
+                        .id(rs.getInt("time_slot_id"))
+                        .start_time(rs.getTime("start_time"))
+                        .end_time(rs.getTime("end_time"))
+                        .build();
+
+                User student_user = User.builder()
+                        .name(rs.getString("student_name"))
+                        .email(rs.getString("email"))
+                        .build();
+
+                Student st = Student.builder()
+                        .user(student_user)
+                        .build();
+
+                User instructor = User.builder()
+                        .name(rs.getString("instructor_name"))
+                        .build();
+
+                Group g = Group.builder()
+                        .name(rs.getString("group_name"))
+                        .build();
+
+                Session ses = Session.builder()
+                        .date(rs.getDate("date"))
+                        .timeSlot(ts)
+                        .group(g)
+                        .instructor(instructor)
+                        .build();
+
+                Status s = Status.builder()
+                        .attended(rs.getBoolean("attended"))
+                        .session(ses)
+                        .student(st)
+                        .build();
+
+                statuses.add(s);
+            }
+
+            return statuses;
         } catch (SQLException e) {
             e.printStackTrace();
         }
