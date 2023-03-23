@@ -72,6 +72,30 @@ public class GroupDataSource extends DataSourceImpl<Group> {
         return null;
     }
 
+    public List<Group> getGroupsByInstructorId(int instructorId) {
+        String sql =
+                """
+                SELECT DISTINCT g.*
+                FROM [Session] ses
+                INNER JOIN [Group] g ON ses.group_id = g.id
+                INNER JOIN [Status] s ON ses.id = s.session_id
+                INNER JOIN [USER] i ON i.id = ses.instructor_id
+                WHERE i.id = ?
+                """;
+
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, instructorId);
+            ResultSet rs = statement.executeQuery();
+
+            return getModelsFromResultSet(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     @Override
     public List<Group> all() {
         return null;

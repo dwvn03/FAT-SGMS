@@ -10,7 +10,7 @@ import utils.date.DateUtils;
 
 import java.io.IOException;
 
-@WebServlet(name = "AttendanceReportDetailController", value = "/student/attendance-report/detail")
+@WebServlet(name = "StudentAttendanceReportDetailController", value = "/student/attendance-report/detail")
 public class AttendanceReportDetailController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

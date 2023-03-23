@@ -14,12 +14,12 @@ import java.util.List;
 
 @WebServlet(name = "DateController", value = "/api/date")
 public class DateController extends HttpServlet {
-    private final Gson gson = new Gson();
+//    private final Gson gson = new Gson();
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String year = request.getParameter("year");
 
         List<List<String>> mondaysAndSundays = DateUtils.getAllMondaysAndSundayInYear(Integer.parseInt(year));
-        String json = gson.toJson(mondaysAndSundays);
+//        String json = gson.toJson(mondaysAndSundays);
 
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
