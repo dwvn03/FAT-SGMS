@@ -27,7 +27,7 @@
   <c:if test="${param.succeeded != null && param.succeeded}">
     Toastify({
       text: "Attendance successfully recorded!",
-      duration: 20000,
+      duration: 3000,
       close: true,
       gravity: "top",
       position: "right",
